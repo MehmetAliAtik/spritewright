@@ -21,7 +21,7 @@ from spritewright import skill as ps_skill  # noqa: E402
 
 TURKISH = re.compile("[" + "".join(map(chr, (0x11F, 0xFC, 0x15F, 0x131, 0xF6, 0xE7, 0x11E, 0xDC, 0x15E, 0x130, 0xD6, 0xC7))) + "]")
 # personal strings that must never appear in the repository (assembled so this file does not contain them)
-PERSONAL = ["C:" + "\\" + "Users", "D:" + "\\" + "Proje" + "ler", "Ham" + "mer", "MehmetAli" + "Atik",
+PERSONAL = ["C:" + "\\" + "Users", "D:" + "\\" + "Proje" + "ler", "Ham" + "mer",
             "alimehmet" + "atik"]
 TEXT_SUFFIXES = {".py", ".md", ".json", ".toml", ".txt", ".ps1", ".hex", ".cfg", ".yml", ".yaml"}
 # Files exempt from the English / personal-path scans below (none: every document is covered).

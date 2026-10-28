@@ -64,7 +64,7 @@ posting in public issues or discussions:
 
 * through GitHub's private reporting for this repository (the "Report content" /
   "Report abuse" options GitHub offers on issues, comments and discussions), or
-* by contacting the maintainer, [pekinduck](https://github.com/pekinduck),
+* by contacting the maintainer, [MehmetAliAtik](https://github.com/MehmetAliAtik),
   through the contact options on their GitHub profile.
 
 All complaints will be reviewed and investigated promptly and fairly.

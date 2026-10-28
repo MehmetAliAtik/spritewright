@@ -359,7 +359,7 @@ see [SECURITY.md](SECURITY.md). Changes are listed in [CHANGELOG.md](CHANGELOG.m
 
 ## License
 
-[MIT](LICENSE) (c) 2026 pekinduck. Third-party notices: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+[MIT](LICENSE) (c) 2026 MehmetAliAtik. Third-party notices: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 ## Credits & inspirations
 
