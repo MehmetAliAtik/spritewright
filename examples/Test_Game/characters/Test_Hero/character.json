@@ -1,0 +1,96 @@
+{
+  "schema": "spritewright.card/1",
+  "kind": "character",
+  "name": "Test_Hero",
+  "game": "Test_Game",
+  "role": "player, small adventurer",
+  "design": "chibi adventurer, side view facing right: orange hair, green tunic, brown belt and boots, peach skin",
+  "cell": [
+    32,
+    32
+  ],
+  "cell_override": false,
+  "pivot": null,
+  "colors": [
+    {
+      "index": 0,
+      "hex": "000000",
+      "role": "outline"
+    },
+    {
+      "index": 15,
+      "hex": "ffccaa",
+      "role": "skin"
+    },
+    {
+      "index": 4,
+      "hex": "ab5236",
+      "role": "brown"
+    },
+    {
+      "index": 9,
+      "hex": "ffa300",
+      "role": "hair"
+    },
+    {
+      "index": 10,
+      "hex": "ffec27",
+      "role": "gold"
+    },
+    {
+      "index": 11,
+      "hex": "00e436",
+      "role": "foliage"
+    },
+    {
+      "index": 3,
+      "hex": "008751",
+      "role": "foliage_shadow"
+    },
+    {
+      "index": 2,
+      "hex": "7e2553",
+      "role": "shadow"
+    },
+    {
+      "index": 1,
+      "hex": "1d2b53",
+      "role": "shadow_dark"
+    }
+  ],
+  "palette_file": "source/Test_Hero_palette.json",
+  "animations": {
+    "Idle": {
+      "frames": 4,
+      "fps": 5.0,
+      "loop": true,
+      "sheet": "animations/Idle/Test_Hero_Idle_sheet.png",
+      "source": "test_hero.json",
+      "updated": "2026-10-28 07:54"
+    },
+    "Walk": {
+      "frames": 6,
+      "fps": 10.0,
+      "loop": true,
+      "sheet": "animations/Walk/Test_Hero_Walk_sheet.png",
+      "source": "test_hero.json",
+      "updated": "2026-10-28 07:54"
+    }
+  },
+  "created": "2026-10-28 07:54",
+  "updated": "2026-10-28 07:54",
+  "changelog": [
+    {
+      "date": "2026-10-28 07:54",
+      "text": "card created (9 colours, cell 32x32)"
+    },
+    {
+      "date": "2026-10-28 07:54",
+      "text": "Idle exported (4 frames, 5 fps, loop on) from test_hero.json"
+    },
+    {
+      "date": "2026-10-28 07:54",
+      "text": "Walk exported (6 frames, 10 fps, loop on) from test_hero.json"
+    }
+  ]
+}

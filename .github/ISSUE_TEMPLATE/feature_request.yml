@@ -1,0 +1,35 @@
+name: Feature request
+description: Suggest a new command, option, template or improvement.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please search existing issues first. Small, focused requests are easiest to discuss.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the use case, e.g. "I want to export sheets for Godot without re-slicing".
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: What should spritewright do? An example command or API call helps.
+      placeholder: |
+        spritewright godot-sheet SRC --cell 32x32
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Workarounds you use today, or other tools that do this.
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contribution
+      options:
+        - label: I would like to implement this myself (see CONTRIBUTING.md).

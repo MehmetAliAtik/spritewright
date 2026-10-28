@@ -1,0 +1,793 @@
+{
+  "_doc": [
+    "Animation templates for part rigs (spritewright.anim.apply_template / CLI anim-apply).",
+    "Each template: description, frames (default count), fps, loop, and 'tracks' (or 'tables': {frame count: tracks}).",
+    "tracks = {role: {property: spec}}. Roles are matched to rig parts via _roles aliases; missing roles are skipped.",
+    "Special roles: 'root' (dx/dy added to every part), '*' (visible/swap/flip applied to every part).",
+    "Properties: dx, dy (pixels, y down), flip_h, flip_v, visible, swap (alt name, 'a|b' = first existing alt, null = none).",
+    "Specs: a per-frame list (resampled when the frame count differs), {'wave': {amp, period ('N', 'N/2' or number), phase, mode sine|abs|pos}},",
+    "or {'keys': [[t 0..1, value, easing-of-segment?], ...], 'ease': default}. dx/dy values are multiplied by --scale, rounded half away from zero.",
+    "_hierarchy: child role -> parent role; a child also moves by its parent's offsets (head/arms ride the body).",
+    "Optional 'views': {view name: {description, tables|tracks}} replaces the tracks for that view (e.g. walk --view front for front-facing characters, where forward/back dx would only spread the legs)."
+  ],
+  "_roles": {
+    "head": [
+      "head"
+    ],
+    "body": [
+      "body",
+      "torso",
+      "chest"
+    ],
+    "arm_l": [
+      "arm_l",
+      "arm_left",
+      "left_arm",
+      "hand_l"
+    ],
+    "arm_r": [
+      "arm_r",
+      "arm_right",
+      "right_arm",
+      "hand_r"
+    ],
+    "leg_l": [
+      "leg_l",
+      "leg_left",
+      "left_leg",
+      "foot_l"
+    ],
+    "leg_r": [
+      "leg_r",
+      "leg_right",
+      "right_leg",
+      "foot_r"
+    ],
+    "legs": [
+      "legs",
+      "feet"
+    ],
+    "weapon": [
+      "weapon",
+      "accessory",
+      "sword",
+      "staff",
+      "item",
+      "tool"
+    ]
+  },
+  "_hierarchy": {
+    "head": "body",
+    "arm_l": "body",
+    "arm_r": "body",
+    "weapon": "arm_r"
+  },
+  "templates": {
+    "idle": {
+      "description": "breathing: body (and riding head/arms) dips 1px, blink on the last frame if a 'blink' alt exists",
+      "frames": 4,
+      "fps": 6,
+      "loop": true,
+      "tracks": {
+        "body": {
+          "dy": {
+            "wave": {
+              "amp": 1,
+              "period": "N",
+              "phase": 0.0,
+              "mode": "pos"
+            }
+          }
+        },
+        "head": {
+          "swap": [
+            null,
+            null,
+            null,
+            "blink"
+          ]
+        }
+      }
+    },
+    "walk": {
+      "description": "walk cycle (6 or 8 frames): legs alternate forward/back + lift on the pass, body dips after contact, arms counter-swing",
+      "frames": 6,
+      "fps": 10,
+      "loop": true,
+      "tables": {
+        "6": {
+          "leg_l": {
+            "dx": [
+              1,
+              1,
+              0,
+              -1,
+              -1,
+              0
+            ],
+            "dy": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              -1
+            ]
+          },
+          "leg_r": {
+            "dx": [
+              -1,
+              -1,
+              0,
+              1,
+              1,
+              0
+            ],
+            "dy": [
+              0,
+              0,
+              -1,
+              0,
+              0,
+              0
+            ]
+          },
+          "body": {
+            "dy": [
+              0,
+              1,
+              0,
+              0,
+              1,
+              0
+            ]
+          },
+          "arm_l": {
+            "dx": [
+              -1,
+              -1,
+              0,
+              1,
+              1,
+              0
+            ]
+          },
+          "arm_r": {
+            "dx": [
+              1,
+              1,
+              0,
+              -1,
+              -1,
+              0
+            ]
+          }
+        },
+        "8": {
+          "leg_l": {
+            "dx": [
+              1,
+              1,
+              0,
+              0,
+              -1,
+              -1,
+              0,
+              0
+            ],
+            "dy": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              -1,
+              -1
+            ]
+          },
+          "leg_r": {
+            "dx": [
+              -1,
+              -1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0
+            ],
+            "dy": [
+              0,
+              0,
+              -1,
+              -1,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "body": {
+            "dy": [
+              0,
+              1,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          "arm_l": {
+            "dx": [
+              -1,
+              -1,
+              0,
+              0,
+              1,
+              1,
+              0,
+              0
+            ]
+          },
+          "arm_r": {
+            "dx": [
+              1,
+              1,
+              0,
+              0,
+              -1,
+              -1,
+              0,
+              0
+            ]
+          }
+        }
+      },
+      "views": {
+        "front": {
+          "description": "front-facing: legs alternately lift 1px, body dips on the double-contact frames, opposite arm rises a frame later (no dx)",
+          "tables": {
+            "6": {
+              "leg_l": {
+                "dy": [
+                  0,
+                  -1,
+                  -1,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "leg_r": {
+                "dy": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  -1,
+                  -1
+                ]
+              },
+              "body": {
+                "dy": [
+                  1,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0
+                ]
+              },
+              "arm_l": {
+                "dy": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -1
+                ]
+              },
+              "arm_r": {
+                "dy": [
+                  0,
+                  0,
+                  -1,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            },
+            "8": {
+              "leg_l": {
+                "dy": [
+                  0,
+                  -1,
+                  -1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "leg_r": {
+                "dy": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -1,
+                  -1,
+                  0
+                ]
+              },
+              "body": {
+                "dy": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0
+                ]
+              },
+              "arm_l": {
+                "dy": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  -1,
+                  0
+                ]
+              },
+              "arm_r": {
+                "dy": [
+                  0,
+                  0,
+                  -1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "run": {
+      "description": "run cycle: bigger leg/arm swing (2px), airborne pass frames lift the whole character",
+      "frames": 6,
+      "fps": 12,
+      "loop": true,
+      "tracks": {
+        "root": {
+          "dy": [
+            0,
+            0,
+            -1,
+            0,
+            0,
+            -1
+          ]
+        },
+        "leg_l": {
+          "dx": [
+            2,
+            1,
+            -1,
+            -2,
+            -1,
+            1
+          ],
+          "dy": [
+            0,
+            0,
+            0,
+            0,
+            -1,
+            -1
+          ]
+        },
+        "leg_r": {
+          "dx": [
+            -2,
+            -1,
+            1,
+            2,
+            1,
+            -1
+          ],
+          "dy": [
+            0,
+            -1,
+            -1,
+            0,
+            0,
+            0
+          ]
+        },
+        "body": {
+          "dy": [
+            0,
+            1,
+            0,
+            0,
+            1,
+            0
+          ]
+        },
+        "arm_l": {
+          "dx": [
+            -2,
+            -1,
+            1,
+            2,
+            1,
+            -1
+          ]
+        },
+        "arm_r": {
+          "dx": [
+            2,
+            1,
+            -1,
+            -2,
+            -1,
+            1
+          ]
+        }
+      },
+      "views": {
+        "front": {
+          "description": "front-facing run: higher alternate leg lift, airborne pass frames, arms pump",
+          "tracks": {
+            "root": {
+              "dy": [
+                0,
+                -1,
+                0,
+                0,
+                -1,
+                0
+              ]
+            },
+            "leg_l": {
+              "dy": [
+                0,
+                -2,
+                -1,
+                0,
+                0,
+                0
+              ]
+            },
+            "leg_r": {
+              "dy": [
+                0,
+                0,
+                0,
+                0,
+                -2,
+                -1
+              ]
+            },
+            "body": {
+              "dy": [
+                1,
+                0,
+                0,
+                1,
+                0,
+                0
+              ]
+            },
+            "arm_l": {
+              "dy": [
+                0,
+                0,
+                0,
+                0,
+                -1,
+                -2
+              ]
+            },
+            "arm_r": {
+              "dy": [
+                0,
+                -1,
+                -2,
+                0,
+                0,
+                0
+              ]
+            }
+          }
+        }
+      }
+    },
+    "jump": {
+      "description": "jump: crouch -> launch (ease_out) -> apex -> fall (ease_in) -> land squash; legs tuck, arms rise",
+      "frames": 6,
+      "fps": 10,
+      "loop": false,
+      "tracks": {
+        "root": {
+          "dy": {
+            "keys": [
+              [
+                0.0,
+                0
+              ],
+              [
+                0.2,
+                0,
+                "ease_out"
+              ],
+              [
+                0.6,
+                -5,
+                "ease_in"
+              ],
+              [
+                1.0,
+                0
+              ]
+            ]
+          }
+        },
+        "body": {
+          "dy": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            1
+          ]
+        },
+        "leg_l": {
+          "dy": [
+            0,
+            0,
+            -1,
+            -1,
+            0,
+            0
+          ]
+        },
+        "leg_r": {
+          "dy": [
+            0,
+            0,
+            -1,
+            -1,
+            0,
+            0
+          ]
+        },
+        "legs": {
+          "dy": [
+            0,
+            0,
+            -1,
+            -1,
+            0,
+            0
+          ]
+        },
+        "arm_l": {
+          "dy": [
+            0,
+            1,
+            -2,
+            -2,
+            -1,
+            1
+          ]
+        },
+        "arm_r": {
+          "dy": [
+            0,
+            1,
+            -2,
+            -2,
+            -1,
+            1
+          ]
+        }
+      }
+    },
+    "attack": {
+      "description": "attack: anticipation (wind back) -> strike (forward, weapon extends) -> recovery",
+      "frames": 6,
+      "fps": 12,
+      "loop": false,
+      "tracks": {
+        "body": {
+          "dx": [
+            -1,
+            -1,
+            1,
+            1,
+            0,
+            0
+          ]
+        },
+        "arm_r": {
+          "dx": [
+            -1,
+            -2,
+            3,
+            3,
+            1,
+            0
+          ],
+          "dy": [
+            0,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        "weapon": {
+          "dx": [
+            0,
+            -1,
+            1,
+            1,
+            0,
+            0
+          ],
+          "dy": [
+            -1,
+            -2,
+            1,
+            1,
+            0,
+            0
+          ]
+        },
+        "arm_l": {
+          "dx": [
+            1,
+            1,
+            -1,
+            -1,
+            0,
+            0
+          ]
+        },
+        "leg_l": {
+          "dx": [
+            0,
+            0,
+            1,
+            1,
+            0,
+            0
+          ]
+        }
+      }
+    },
+    "hurt": {
+      "description": "hurt: knockback (root back + up), head whips back, flash via a 'hurt'/'flash' alt if present",
+      "frames": 4,
+      "fps": 10,
+      "loop": false,
+      "tracks": {
+        "root": {
+          "dx": [
+            -2,
+            -2,
+            -1,
+            0
+          ],
+          "dy": [
+            0,
+            -1,
+            0,
+            0
+          ]
+        },
+        "head": {
+          "dx": [
+            -1,
+            -1,
+            0,
+            0
+          ]
+        },
+        "*": {
+          "swap": [
+            "hurt|flash",
+            null,
+            "hurt|flash",
+            null
+          ]
+        }
+      }
+    },
+    "death": {
+      "description": "death: recoil, body collapses down over the legs, flicker frame, ends lying still (loop off)",
+      "frames": 6,
+      "fps": 8,
+      "loop": false,
+      "tracks": {
+        "body": {
+          "dx": [
+            0,
+            -1,
+            -1,
+            -2,
+            -2,
+            -2
+          ],
+          "dy": [
+            0,
+            -1,
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        "head": {
+          "dy": [
+            0,
+            0,
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "arm_l": {
+          "dy": [
+            0,
+            -1,
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "arm_r": {
+          "dy": [
+            0,
+            -1,
+            0,
+            1,
+            1,
+            1
+          ]
+        },
+        "*": {
+          "visible": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        }
+      }
+    }
+  }
+}

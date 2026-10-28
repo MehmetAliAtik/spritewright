@@ -1,0 +1,463 @@
+"""Game / character project layout under outputs/ (default ./outputs; override: root=... or env
+SPRITEWRIGHT_OUTPUTS).
+
+    outputs/README.md                                   auto index (games, characters, animations, date)
+    outputs/<Game>/game-style.{md,json}, palette.hex, palette_preview.png      (style.py)
+    outputs/<Game>/characters/<Char>/character.{md,json}
+                                    source/<Char>_palette.json (subset of the game palette) + sources
+                                    animations/<Anim>/<Char>_<Anim>_sheet.{png,json}
+                                                      <Char>_<Anim>_preview.gif, unity-import-note.md
+                                                      _archive/<YYYY-MM-DD_HHMMSS>/  (previous versions)
+                                    animations/<Char>_all_animations_atlas.{png,json}  (one row per animation)
+                                    review/<Anim>_contact.png (build --final; All_contact.png for 'all'),
+                                           <Char>_check.{json,txt}, draft/<Char>_<Anim>_sheet.{png,json}
+                                           (build --draft) - working files for the AI's visual check
+    outputs/<Game>/props/<Prop>/prop.{md,json} ...  and  tiles/<Tileset>/tileset.{md,json} ... (same logic)
+
+Export reuses unity.prepare_unity / render_rows / sheet_json, so the per-animation sheets and the
+combined atlas share one cell size (game cell or card override) and one pivot, exactly like unity-sheet.
+"""
+from __future__ import annotations
+
+import json
+import re
+import shutil
+from datetime import datetime
+from pathlib import Path
+
+from .errors import PixelError
+from .palette import Palette, is_hex, parse_hex, to_hex
+from .paths import outputs_root as _outputs_root
+
+KINDS = {"character": ("characters", "character"), "prop": ("props", "prop"), "tile": ("tiles", "tileset")}
+_WORD = re.compile(r"^[A-Za-z0-9]+$")
+
+
+# --------------------------------------------------------------------------- names / paths
+def normalize_name(s):
+    """'aurora quest' -> 'Aurora_Quest', 'erica' -> 'Erica', 'walk' -> 'Walk', 'run-fast' -> 'Run_Fast'.
+    Words: ASCII letters/digits only, first word must start with a letter; the rest of each word keeps
+    its case ('AuroraQuest' stays). Raises PixelError on anything else."""
+    raw = str(s).strip()
+    words = [w for w in re.split(r"[\s_\-]+", raw) if w]
+    if not words:
+        raise PixelError(f"name {s!r} is empty")
+    for w in words:
+        if not _WORD.match(w):
+            bad = sorted({c for c in w if not re.match(r"[A-Za-z0-9]", c)})
+            raise PixelError(f"name {s!r} has invalid characters {bad}: use English letters, digits, spaces, "
+                             f"'_' or '-' (e.g. 'aurora quest' -> Aurora_Quest)")
+    if not words[0][0].isalpha():
+        raise PixelError(f"name {s!r} must start with a letter")
+    return "_".join(w[0].upper() + w[1:] for w in words)
+
+
+def outputs_root(root=None):
+    """root argument, else env SPRITEWRIGHT_OUTPUTS, else ./outputs (current working directory)."""
+    return _outputs_root(root)
+
+
+def game_dir(game, root=None):
+    return outputs_root(root) / normalize_name(game)
+
+
+def asset_dir(game, name, kind="character", root=None):
+    if kind not in KINDS:
+        raise PixelError(f"kind must be one of {', '.join(KINDS)}")
+    return game_dir(game, root) / KINDS[kind][0] / normalize_name(name)
+
+
+def find_game(path):
+    """Walk up from a file/folder to the game folder (has game-style.json).
+    -> (game_dir, asset_dir | None, kind | None) or None."""
+    p = Path(path).resolve()
+    chain = [p] + list(p.parents)
+    for i, d in enumerate(chain):
+        if (d / "game-style.json").is_file():
+            asset, kind = None, None
+            below = list(reversed(chain[:i]))  # game_dir child ... p
+            if len(below) >= 2:
+                for k, (folder, _) in KINDS.items():
+                    if below[0].name == folder:
+                        asset, kind = below[1], k
+            return d, asset, kind
+    return None
+
+
+def _now():
+    return datetime.now().strftime("%Y-%m-%d %H:%M")
+
+
+def _stamp():
+    return datetime.now().strftime("%Y-%m-%d_%H%M%S")
+
+
+# --------------------------------------------------------------------------- cards
+def card_paths(adir, kind="character"):
+    stem = KINDS[kind][1]
+    return Path(adir) / f"{stem}.json", Path(adir) / f"{stem}.md"
+
+
+def load_card(adir, kind="character"):
+    jp, _ = card_paths(adir, kind)
+    if not jp.is_file():
+        return None
+    return json.loads(jp.read_text(encoding="utf-8"))
+
+
+def render_card_md(card):
+    W, H = card["cell"]
+    kind = card.get("kind", "character")
+    piv = card.get("pivot")
+    piv_s = "bottom-center of the union bbox (default)" if piv is None else (
+        f"{piv[0]},{piv[1]} (sprite pixel)" if isinstance(piv, list) else str(piv))
+    L = [f"# {card['name']} ({kind}) - {card['game']}", "",
+         f"_Generated by spritewright; machine-readable twin: {KINDS[kind][1]}.json. Last update: {card['updated']}._",
+         "", f"- **Role:** {card.get('role') or '-'}", f"- **Design note:** {card.get('design') or '-'}",
+         f"- **Cell size:** {W}x{H} px ({'override' if card.get('cell_override') else 'game default'})",
+         f"- **Pivot:** {piv_s}", f"- **Palette file:** `{card['palette_file']}`", "",
+         f"## Colours used ({len(card['colors'])} of the game palette)", "",
+         "| # | hex | role |", "|---|-----|------|"]
+    for c in card["colors"]:
+        L.append(f"| {c['index']} | `#{c['hex']}` | {c['role']} |")
+    L += ["", "## Animations", ""]
+    if card.get("animations"):
+        L += ["| Animation | Frames | FPS | Loop | Sheet | Updated |", "|---|---|---|---|---|---|"]
+        for a, v in card["animations"].items():
+            L.append(f"| {a} | {v['frames']} | {v['fps']:g} | {'yes' if v['loop'] else 'no'} | "
+                     f"`{v['sheet']}` | {v['updated']} |")
+    else:
+        L.append("_none exported yet_")
+    L += ["", "## Change log", ""] + [f"- {c['date']}: {c['text']}" for c in card.get("changelog", [])] + [""]
+    return "\n".join(L)
+
+
+def write_card(card, adir):
+    kind = card.get("kind", "character")
+    jp, mp = card_paths(adir, kind)
+    jp.parent.mkdir(parents=True, exist_ok=True)
+    jp.write_text(json.dumps(card, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    mp.write_text(render_card_md(card), encoding="utf-8")
+    return jp, mp
+
+
+def _pick_colors(st, spec):
+    """'skin,accent,3,#ffec27' -> palette entries (error if not in the game palette)."""
+    pal = st["palette"]
+    if not spec:
+        return [dict(e) for e in pal]
+    items = spec if isinstance(spec, (list, tuple)) else [t.strip() for t in str(spec).split(",") if t.strip()]
+    out = []
+    for it in items:
+        it = str(it).strip()
+        e = next((e for e in pal if e["role"] == it.lower()), None)
+        if e is None and it.isdigit():
+            i = int(it)
+            if not 0 <= i < len(pal):
+                raise PixelError(f"colour index {i} is outside the game palette (0..{len(pal) - 1})")
+            e = pal[i]
+        if e is None and is_hex(it.lstrip("#")):
+            h = to_hex(parse_hex(it))
+            e = next((e for e in pal if e["hex"] == h), None)
+            if e is None:
+                raise PixelError(f"colour #{h} is not in the {st['name']} game palette; ask the user, then add it "
+                                 f"with game-palette-add {st['name']} {h} --role ROLE")
+        if e is None:
+            raise PixelError(f"colour {it!r} is not a role, index or hex of the {st['name']} palette "
+                             f"(roles: {', '.join(x['role'] for x in pal)})")
+        if all(x["hex"] != e["hex"] for x in out):
+            out.append(dict(e))
+    return out
+
+
+def char_new(game, name, role="", design="", cell=None, pivot=None, colors=None, kind="character", root=None,
+             force=False):
+    """Create the character (prop / tileset) card + source/<Name>_palette.json. Returns (card, paths)."""
+    from .style import load_style
+    from .unity import _parse_cell, parse_pivot
+    st = load_style(game, root)
+    gname, cname = st["name"], normalize_name(name)
+    adir = asset_dir(gname, cname, kind, root)
+    old = load_card(adir, kind)
+    if old and not force:
+        raise PixelError(f"{card_paths(adir, kind)[0]} already exists (pass --force to rewrite the card; "
+                         f"animations and change log are kept)")
+    ents = _pick_colors(st, colors)
+    c = _parse_cell(cell) if cell else tuple(st["cell"])
+    pv = None
+    if pivot:
+        pp = parse_pivot(pivot)
+        pv = list(pp[1]) if pp[0] == "point" else pp[1]
+    now = _now()
+    pal_rel = f"source/{cname}_palette.json"
+    card = {"schema": "spritewright.card/1", "kind": kind, "name": cname, "game": gname, "role": role,
+            "design": design, "cell": list(c), "cell_override": bool(cell), "pivot": pv,
+            "colors": ents, "palette_file": pal_rel,
+            "animations": (old or {}).get("animations", {}), "created": (old or {}).get("created", now),
+            "updated": now, "changelog": (old or {}).get("changelog", [])}
+    card["changelog"].append({"date": now, "text": ("card updated" if old else "card created")
+                              + f" ({len(ents)} colours, cell {c[0]}x{c[1]})"})
+    (adir / "source").mkdir(parents=True, exist_ok=True)
+    (adir / "animations").mkdir(parents=True, exist_ok=True)
+    Palette([e["hex"] for e in ents], names={e["role"]: i for i, e in enumerate(ents)},
+            name=f"{cname}-palette").save(adir / pal_rel)
+    jp, mp = write_card(card, adir)
+    write_index(root)
+    return card, {"card": mp, "card_json": jp, "palette": adir / pal_rel, "dir": adir}
+
+
+# --------------------------------------------------------------------------- export
+def _archive_items(items, archive_root, ts):
+    items = [p for p in items if p.exists()]
+    if not items:
+        return None
+    dest, k = archive_root / ts, 2
+    while dest.exists():
+        dest = archive_root / f"{ts}_{k}"
+        k += 1
+    dest.mkdir(parents=True)
+    for p in items:
+        shutil.move(str(p), str(dest / p.name))
+    return dest
+
+
+def _note_md(cname, aname, png, size, cell, entry, pivot, ppu):
+    n = pivot["normalized"]
+    pv = pivot["unity_preset"] + ("" if pivot["unity_preset"] != "Custom" else f" (X {n['x']:.4f}, Y {n['y']:.4f})")
+    return "\n".join([
+        f"# Unity import: {cname} / {aname}", "",
+        f"- File: `{png}` ({size[0]}x{size[1]}), horizontal strip, {entry['frame_count']} frames",
+        f"- Cell: {cell[0]}x{cell[1]} px, spacing 0, margin 0 (same cell as every other {cname} animation "
+        f"and the all-animations atlas)",
+        f"- Pivot: {pv} = cell pixel ({pivot['pixel']['x']},{pivot['pixel']['y']}), normalized "
+        f"({n['x']:.4f}, {n['y']:.4f})",
+        f"- FPS: {entry['fps']:g}, loop: {'on' if entry['loop'] else 'off'}" +
+        ("" if entry["uniform"] else f" (frame durations {entry['durations']} ms)"), "",
+        "## Texture Import Settings", "",
+        "- Texture Type: Sprite (2D and UI)", "- Sprite Mode: Multiple", f"- Pixels Per Unit: {ppu}",
+        "- Mesh Type: Full Rect", "- Filter Mode: Point (no filter)", "- Compression: None",
+        f"- Max Size: >= {max(size)}", "- Wrap Mode: Clamp", "",
+        "## Sprite Editor -> Slice", "",
+        "- Type: Grid By Cell Size", f"- Pixel Size: X {cell[0]}  Y {cell[1]}", "- Offset / Padding: 0 / 0",
+        f"- Pivot: {pv}", "",
+        f"Animation clip: Sample Rate = {entry['fps']:g}, Loop Time = {'on' if entry['loop'] else 'off'}. "
+        f"Details: `{Path(png).stem}.json`. The GIF is a scaled preview only - do not import it.", ""])
+
+
+def _resolve_export_source(source, adir):
+    from .sprite import resolve_source
+    p = Path(source)
+    if not p.is_absolute():
+        for c in (adir / "source" / p, Path.cwd() / p):
+            if c.is_file():
+                return c.resolve()
+    return resolve_source(source)
+
+
+def select_anims(sp, src, anims=None):
+    """Source animations to export -> (selected source names, {source name: Title_Case name})."""
+    src_anims = [a for a, v in sp.get_animations().items() if v]
+    disp = {a: normalize_name(a) for a in src_anims}
+    if len(set(disp.values())) != len(disp):
+        raise PixelError(f"source animations collide after Title_Case: {src_anims}")
+    if anims:
+        req = anims if isinstance(anims, (list, tuple)) else [t for t in str(anims).split(",") if t.strip()]
+        sel = []
+        for r in req:
+            rn = normalize_name(r)
+            a = next((a for a in src_anims if disp[a] == rn), None)
+            if a is None:
+                raise PixelError(f"animation {r!r} not in {Path(src).name}; animations: "
+                                 + ", ".join(disp[a] for a in src_anims))
+            sel.append(a)
+    else:
+        sel = list(src_anims)
+    if not sel:
+        raise PixelError(f"{Path(src).name} has no animations to export")
+    return sel, disp
+
+
+def prepare_export(st, card, sp, sel, disp, fps=None, no_loop=()):
+    """prepare_unity() with the card cell/pivot and the game PPU (shared by char-export and build)."""
+    from .unity import prepare_unity
+    no_loop_src = [a for a in sel if disp[a] in {normalize_name(x) for x in (no_loop or ())}]
+    return prepare_unity(sp, cell=tuple(card["cell"]), pivot=card.get("pivot"), fps=fps, no_loop=no_loop_src,
+                         anims=sel, ppu=st["ppu"])
+
+
+def write_anim_sheet(prep, a, A, cname, gname, d):
+    """Write <d>/<Char>_<Anim>_sheet.png + .json (horizontal strip). -> (image, entry, png, json)."""
+    from .unity import render_rows, sheet_json
+    d = Path(d)
+    d.mkdir(parents=True, exist_ok=True)
+    png = f"{cname}_{A}_sheet.png"
+    img, fh, ent, cols = render_rows(prep, [a], {a: png}, label={a: A})
+    img.save(d / png)
+    e = ent[0]
+    data = sheet_json(prep, png, img.size, ent, fh, cols,
+                      extra={"game": gname, "character": cname, "animation": A, "frame_count": e["frame_count"],
+                             "fps": e["fps"], "loop": e["loop"]}, json_dir=d)
+    jp = d / f"{cname}_{A}_sheet.json"
+    jp.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    return img, e, d / png, jp
+
+
+def char_export(game, name, source, anims=None, fps=None, no_loop=(), preview_scale=4, kind="character",
+                root=None):
+    """Export a character source into its animations/ folders (archiving older versions), rebuild the
+    all-animations atlas, update the card and outputs/README.md. Returns a report dict."""
+    from . import export as ex
+    from .sprite import load_sprite
+    from .style import load_style
+    st = load_style(game, root)
+    gname, cname = st["name"], normalize_name(name)
+    adir = asset_dir(gname, cname, kind, root)
+    card = load_card(adir, kind)
+    if card is None:
+        raise PixelError(f"{cname} has no card yet ({card_paths(adir, kind)[1]}); create it first with "
+                         f"char-new {gname} {cname} --role ... --design ...")
+    src = _resolve_export_source(source, adir)
+    sp = load_sprite(src)
+    sel, disp = select_anims(sp, src, anims)
+    prep = prepare_export(st, card, sp, sel, disp, fps=fps, no_loop=no_loop)
+    cw, ch = prep["cell"]
+    ts, now = _stamp(), _now()
+    anim_root = adir / "animations"
+    anim_root.mkdir(parents=True, exist_ok=True)
+    rep = {"game": gname, "character": cname, "source": str(src), "cell": [cw, ch], "animations": {},
+           "archived": [], "warnings": []}
+    s = max(1, int(preview_scale or 1))
+    for a in sel:
+        A = disp[a]
+        d = anim_root / A
+        arch = None
+        if d.is_dir():
+            arch = _archive_items([p for p in d.iterdir() if p.name != "_archive"], d / "_archive", ts)
+        d.mkdir(parents=True, exist_ok=True)
+        img, e, _, _ = write_anim_sheet(prep, a, A, cname, gname, d)
+        png = f"{cname}_{A}_sheet.png"
+        gif_p, _ = ex.gif(prep["cell_sprite"], d / f"{cname}_{A}_preview.gif", anim=a, scale=s,
+                          fps=e["fps"] if e["uniform"] else None)
+        (d / "unity-import-note.md").write_text(
+            _note_md(cname, A, png, img.size, (cw, ch), e, prep["pivot"], prep["ppu"]), encoding="utf-8")
+        rel = f"animations/{A}/{png}"
+        card.setdefault("animations", {})[A] = {"frames": e["frame_count"], "fps": e["fps"], "loop": e["loop"],
+                                                "sheet": rel, "source": src.name, "updated": now}
+        msg = f"{A} exported ({e['frame_count']} frames, {e['fps']:g} fps, loop {'on' if e['loop'] else 'off'}) " \
+              f"from {src.name}"
+        if arch:
+            msg += f"; previous version archived to animations/{A}/_archive/{arch.name}"
+            rep["archived"].append(str(arch))
+        card.setdefault("changelog", []).append({"date": now, "text": msg})
+        rep["animations"][A] = {"dir": str(d), "sheet": str(d / png), "json": str(d / f"{cname}_{A}_sheet.json"),
+                                "gif": str(gif_p), "note": str(d / "unity-import-note.md"),
+                                "frames": e["frame_count"], "fps": e["fps"], "loop": e["loop"]}
+    # ---- combined atlas from every animation folder of this character
+    atlas_png = anim_root / f"{cname}_all_animations_atlas.png"
+    atlas_json = atlas_png.with_suffix(".json")
+    arch = _archive_items([atlas_png, atlas_json], anim_root / "_archive", ts)
+    if arch:
+        rep["archived"].append(str(arch))
+    rep.update(_build_atlas(prep, card, anim_root, cname, atlas_png, atlas_json, rep["warnings"]))
+    card["updated"] = now
+    write_card(card, adir)
+    rep["card"] = str(card_paths(adir, kind)[1])
+    rep["index"] = str(write_index(root))
+    return rep
+
+
+def _build_atlas(prep, card, anim_root, cname, atlas_png, atlas_json, warnings):
+    from PIL import Image
+    from .paths import resolve_from
+    from .unity import binary_alpha, sheet_json
+    cw, ch = prep["cell"]
+    order = list(card.get("animations", {}))
+    for d in sorted(p for p in anim_root.iterdir() if p.is_dir() and p.name != "_archive"):
+        if d.name not in order:
+            order.append(d.name)
+    rows = []
+    for A in order:
+        jp = anim_root / A / f"{cname}_{A}_sheet.json"
+        pp = anim_root / A / f"{cname}_{A}_sheet.png"
+        if not (jp.is_file() and pp.is_file()):
+            continue
+        d = json.loads(jp.read_text(encoding="utf-8"))
+        if (d["cell"]["w"], d["cell"]["h"]) != (cw, ch):
+            warnings.append(f"{A}: cell {d['cell']['w']}x{d['cell']['h']} != {cw}x{ch}; left out of the atlas "
+                            f"(re-export it)")
+            continue
+        if d["pivot"]["pixel"] != prep["pivot"]["pixel"]:
+            warnings.append(f"{A}: pivot pixel {d['pivot']['pixel']} differs from {prep['pivot']['pixel']}")
+        rows.append((A, d, Image.open(pp).convert("RGBA"), jp))
+    cols = max(int(d["animations"][0]["frame_count"]) for _, d, _, _ in rows)
+    img = Image.new("RGBA", (cols * cw, len(rows) * ch), (0, 0, 0, 0))
+    fhash, entries, sources = {}, [], set()
+    for r, (A, d, im, sjp) in enumerate(rows):
+        img.paste(im, (0, r * ch))
+        e = dict(d["animations"][0])
+        e["row"], e["strip"] = r, f"{A}/{cname}_{A}_sheet.png"
+        entries.append(e)
+        sources.add(str(resolve_from(d["meta"].get("source", ""), sjp.parent) or ""))
+        for k, f in d["frames"].items():
+            f = json.loads(json.dumps(f))
+            f["frame"]["y"] = r * ch
+            fhash[k] = f
+    img = binary_alpha(img)
+    img.save(atlas_png)
+    data = sheet_json(prep, atlas_png.name, img.size, entries, fhash, cols,
+                      extra={"game": card["game"], "character": cname}, json_dir=atlas_json.parent)
+    if len(sources) != 1:
+        data["meta"]["source"] = ""  # animations come from different sources
+    atlas_json.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    return {"atlas": str(atlas_png), "atlas_json": str(atlas_json), "atlas_rows": [A for A, _, _, _ in rows]}
+
+
+# --------------------------------------------------------------------------- README index
+def write_index(root=None):
+    """Regenerate outputs/README.md (games, characters/props/tiles, animations, last updated)."""
+    r = outputs_root(root)
+    r.mkdir(parents=True, exist_ok=True)
+    now = _now()
+    L = ["# spritewright outputs", "", f"Last updated: {now}", "",
+         "Auto-generated by spritewright (game-new / char-new / char-export / game-palette-add / outputs-index). "
+         "Do not edit by hand.", ""]
+    games, others = [], []
+    for d in sorted(p for p in r.iterdir() if p.is_dir()):
+        (games if (d / "game-style.json").is_file() else others).append(d)
+    if not games:
+        L += ["_No games yet._", ""]
+    for g in games:
+        try:
+            st = json.loads((g / "game-style.json").read_text(encoding="utf-8"))
+        except Exception:
+            st = {}
+        cell = st.get("cell", ["?", "?"])
+        L += [f"## {g.name}", "",
+              f"- Style: [game-style.md]({g.name}/game-style.md) - {len(st.get('palette', []))} colours, "
+              f"cell {cell[0]}x{cell[1]}, PPU {st.get('ppu', '?')}, outline {st.get('outline', '?')}, "
+              f"mood {', '.join(st.get('mood', [])) or '-'} (updated {st.get('updated', '?')})"]
+        for kind, (folder, stem) in KINDS.items():
+            kd = g / folder
+            items = sorted(p for p in kd.iterdir() if p.is_dir()) if kd.is_dir() else []
+            if not items:
+                continue
+            L.append(f"- {folder.capitalize()}:")
+            for a in items:
+                card = load_card(a, kind) or {}
+                anims = card.get("animations", {})
+                if not anims:
+                    anim_dir = a / "animations"
+                    anims = {p.name: None for p in sorted(anim_dir.iterdir())
+                             if p.is_dir() and p.name != "_archive"} if anim_dir.is_dir() else {}
+                desc = ", ".join(f"{n} ({v['frames']}f, {v['fps']:g} fps)" if v else n for n, v in anims.items())
+                upd = card.get("updated", "")
+                L.append(f"  - **{a.name}** ([{stem}.md]({g.name}/{folder}/{a.name}/{stem}.md))"
+                         + (f" - {card['role']}" if card.get("role") else "")
+                         + f" - animations: {desc or 'none yet'}" + (f" (updated {upd})" if upd else ""))
+        L.append("")
+    if others:
+        L += ["## Other folders", ""] + [f"- `{d.name}/`" + (" (old output/ content, migrated)"
+                                                              if d.name == "Unsorted" else "") for d in others] + [""]
+    p = r / "README.md"
+    p.write_text("\n".join(L), encoding="utf-8")
+    return p

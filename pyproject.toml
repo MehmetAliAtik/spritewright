@@ -1,0 +1,79 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "spritewright"
+version = "0.1.0"
+description = "Scriptable pixel-art toolkit for AI agents: sprites, animations, sprite sheets, GIFs and Unity atlases from the command line, plus a Claude Code skill."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "pekinduck" }]
+requires-python = ">=3.10"
+dependencies = [
+    "pillow>=10",
+    "numpy>=1.24",
+]
+keywords = [
+    "pixel-art", "sprite", "sprite-sheet", "animation", "gamedev", "unity", "gif",
+    "palette", "claude-code", "ai-agent", "cli",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Games/Entertainment",
+    "Topic :: Multimedia :: Graphics",
+    "Topic :: Multimedia :: Graphics :: Editors :: Raster-Based",
+]
+
+[project.scripts]
+spritewright = "spritewright.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/MehmetAliAtik/spritewright"
+Repository = "https://github.com/MehmetAliAtik/spritewright"
+Issues = "https://github.com/MehmetAliAtik/spritewright/issues"
+Documentation = "https://github.com/MehmetAliAtik/spritewright/tree/main/docs"
+Changelog = "https://github.com/MehmetAliAtik/spritewright/blob/main/CHANGELOG.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["spritewright"]
+
+# The Claude Code skill lives at the repository root (SKILL.md, skill/reference/); the wheel carries a
+# copy in spritewright/_skill/ so `spritewright install-skill` works without a source checkout.
+[tool.hatch.build.targets.wheel.force-include]
+"SKILL.md" = "spritewright/_skill/SKILL.md"
+"skill/reference" = "spritewright/_skill/reference"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "spritewright/",
+    "skill/",
+    "tests/",
+    "examples/",
+    "palettes/",
+    "docs/",
+    "tools/",
+    "SKILL.md",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "CODE_OF_CONDUCT.md",
+    "SECURITY.md",
+    "THIRD_PARTY_NOTICES.md",
+    "spritewright.py",
+    "install_skill.py",
+    "install_skill.ps1",
+    "pyproject.toml",
+]
+exclude = ["**/__pycache__", "**/review/", "**/_archive/"]

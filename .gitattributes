@@ -1,0 +1,7 @@
+# Same bytes on every platform: text files are stored and checked out with LF line endings
+# (tests compare generated docs and JSON text), images are never touched.
+* text=auto eol=lf
+*.png binary
+*.gif binary
+*.jpg binary
+*.jpeg binary

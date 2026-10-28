@@ -1,0 +1,28 @@
+# Common errors and fixes
+
+- `python` not found / wrong interpreter → use the full interpreter path from SKILL.md.
+- `row 3 (y=2): length 15, expected 16` or ragged `draw_grid` rows → every row the same length; pad with `.`.
+- `unknown char 'Z'` → add it to `chars` / the `C` dict or fix the typo.
+- `... is not in palette` / ColorError → use a palette role/index; new colours need user approval (game-palette-add).
+- `argument --to: expected one argument` → negative values need `=`: `--to=-1,0`, `--dx=-1`.
+- `no subpixel offsets` → integer offsets only.
+- `has no alt 'blink'` → `rig.alt(part, "blink")` before using it in a swap.
+- Parts don't move together → there is no parenting; give each part the same dx/dy in the frame spec.
+- Pose swap shows the base drawing underneath → create the alt with `copy=False`.
+- `skipped (no matching part)` → rename parts to role names or `--map role=part`.
+- `no unique source in .../source` (build) → pass `--src FILE` or keep one rig json / one make_<x>.py → <x>.json.
+- `make_<x>.py failed: ...` (build) → the script raised; fix it (`PS run <script>` shows the full traceback).
+- `inspect needs a region` → `-r x,y,w,h` on the flagged area (`--full` only if really needed).
+- `cell WxH is smaller than the content` → content exceeds the card cell; shrink the drawing.
+- `.py script` errors from outline/tween/anim-apply → these edit `.json` only (`export-json`).
+- Editing commands overwrite the source json → `-o new.json` when experimenting.
+- `atlas.sync WARN` → atlas older than the source; rebuild (`build` / `unity-sheet`).
+- `anim.motion WARN` → frames nearly identical; bigger offsets or alt poses.
+- `anim.foot_drift FAIL` → lowest opaque row moved; keep a planted foot on the ground row.
+- `anim.size_drift` → a part was redrawn bigger; parts move/swap, never grow.
+- `anim.loop_seam WARN` → last→first jump too big; period must divide the frame count.
+- `anim.orphans WARN` → stray pixels (`PS clean SRC`); eye shines are fine, mention them.
+- `game.off_palette FAIL` / `colour not in the game palette` → ask the user, then game-palette-add.
+- `game.cell FAIL` → export with the card cell (build / char-export do it).
+- `<Char> not found` / `has no card yet` → `char-new` first. `already exists` (game-new) → style frozen.
+- Tests (checkout): `python tests/smoke_test.py` (all suites; writes only to temp dirs).

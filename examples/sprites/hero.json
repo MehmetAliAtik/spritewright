@@ -1,0 +1,102 @@
+{
+  "name": "hero",
+  "width": 32,
+  "height": 32,
+  "palette": "hero_palette.json",
+  "chars": {
+    "A": "outline",
+    "B": "eye",
+    "C": "hair_dk",
+    "D": "tunic",
+    "E": "hair",
+    "F": "white",
+    "G": "hair_lt",
+    "H": "buckle",
+    "I": "tunic_lt",
+    "J": "skin_dk",
+    "K": "blush",
+    "L": "skin"
+  },
+  "frames": {
+    "idle1": {
+      "duration": 450,
+      "rows": [
+        "................................",
+        "................................",
+        "................................",
+        "................................",
+        "................................",
+        "............AAAAAAAA............",
+        "..........AAACCCCCCAAA..........",
+        ".........AACCEEGGEECCAA.........",
+        ".........ACEEEGGEEEEECA.........",
+        "........AACEEGEEEEEEECAA........",
+        "........ACEEEEEEEEEEEECA........",
+        "........ACEEELEEEELEEECA........",
+        "........ACELLLLEELLLLECA........",
+        "........ACLLLLLLLLLLLLCA........",
+        "........ACLLBFLLLLBFLLCA........",
+        "........ACLLBBLLLLBBLLCA........",
+        "........AALKLLLLLLLLKLAA........",
+        ".........ALLLLLCCLLLLLA.........",
+        ".........AAJLLLLLLLLJAA.........",
+        ".........AAAAAJLLJAAAAA.........",
+        "........AAIAIDDDDDDBABAA........",
+        "........AIDBIDDDDDDDBDBA........",
+        "........AIDBIDDDDDDDBDBA........",
+        "........ALLEEEEHHEEEELLA........",
+        "........ALJBIDDDDDDDBJLA........",
+        "........AAABBBBBBBBBBAAA........",
+        "..........AAJCCAAJCCAA..........",
+        "...........AJCCAAJCCA...........",
+        "..........AAEEEAAEEEAA..........",
+        "..........AEEEEAAEEEEA..........",
+        "..........AAAAAAAAAAAA..........",
+        "................................"
+      ]
+    },
+    "idle2": {
+      "duration": 250,
+      "rows": [
+        "................................",
+        "................................",
+        "................................",
+        "................................",
+        "................................",
+        "................................",
+        "............AAAAAAAA............",
+        "..........AAACCCCCCAAA..........",
+        ".........AACCEEGGEECCAA.........",
+        ".........ACEEEGGEEEEECA.........",
+        "........AACEEGEEEEEEECAA........",
+        "........ACEEEEEEEEEEEECA........",
+        "........ACEEELEEEELEEECA........",
+        "........ACELLLLEELLLLECA........",
+        "........ACLLLLLLLLLLLLCA........",
+        "........ACLLLLLLLLLLLLCA........",
+        "........ACLLBBLLLLBBLLCA........",
+        "........AALKLLLLLLLLKLAA........",
+        ".........ALLLLLCCLLLLLA.........",
+        ".........AAJLLLLLLLLJAA.........",
+        ".........AAAAAJLLJAAAAA.........",
+        "........AAIAIDDDDDDBABAA........",
+        "........AIDBIDDDDDDDBDBA........",
+        "........AIDBIDDDDDDDBDBA........",
+        "........ALLEEEEHHEEEELLA........",
+        "........ALJBIDDDDDDDBJLA........",
+        "........AAABBBBBBBBBBAAA........",
+        "..........AAJCCAAJCCAA..........",
+        "..........AAEEEAAEEEAA..........",
+        "..........AEEEEAAEEEEA..........",
+        "..........AAAAAAAAAAAA..........",
+        "................................"
+      ]
+    }
+  },
+  "animations": {
+    "idle": [
+      "idle1",
+      "idle2"
+    ]
+  }
+}

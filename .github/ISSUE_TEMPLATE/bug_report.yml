@@ -1,0 +1,70 @@
+name: Bug report
+description: Something does not work as documented.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug. Please search existing issues first.
+        Security problems: do not open an issue, see SECURITY.md.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: The exact command(s) or Python code. Attach small input files (sprite JSON, PNG) if needed.
+      placeholder: |
+        spritewright check examples/sprites/hero.py
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Output / error message
+      description: Paste the full output (use --verbose if it helps). It is rendered as code.
+      render: text
+  - type: input
+    id: version
+    attributes:
+      label: spritewright version
+      description: Output of `spritewright --version`.
+      placeholder: spritewright 0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you install it?
+      options:
+        - pip install .
+        - pipx install .
+        - uv tool install .
+        - running python spritewright.py from a clone
+        - other
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Operating system and Python version
+      placeholder: Windows 11, Python 3.12
+    validations:
+      required: true
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Did it happen through the Claude Code skill?
+      options:
+        - "No, command line or Python"
+        - "Yes, via the skill"
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Screenshots, Unity version, related issues.

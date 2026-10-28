@@ -1,0 +1,37 @@
+=== spritewright check: test_hero ===
+source: ../source/test_hero.json
+atlas : ../animations/Test_Hero_all_animations_atlas.json
+game  : Test_Game (game-style.json)
+
+[source]
+  PASS  colors.count       source uses 8 colours (limit 16); palette Test_Hero-palette (9 colours, Canvas strict: no off-palette colours)
+
+[atlas]
+  PASS  files.alpha        alpha only 0/255 (3 image(s))
+  PASS  files.off_palette  all colours in palette Test_Hero-palette (3 image(s))
+  PASS  colors.count       at most 8 colours per image (limit 16)
+  PASS  atlas.geometry     cell 32x32, atlas 192x64 = 6x2 cells, 2 strip(s) consistent
+  PASS  atlas.sync         atlas cells identical to the current source frames
+
+[atlas/Idle]
+  PASS  anim.size_drift    size drift: width 0 px, height 1 px (limit 2)
+  PASS  anim.foot_drift    foot point: at most 0 px from pivot y, x spread 0 px (limit 1)
+  PASS  anim.motion        frame-to-frame change 38-80 px (min 3)
+  PASS  anim.loop_seam     loop seam 80 px (median step 44 px)
+  PASS  anim.orphans       orphan pixels: 9 total, at most 3 per frame (limit 3; may be deliberate highlights/dither)
+
+[atlas/Walk]
+  PASS  anim.size_drift    size drift: width 0 px, height 1 px (limit 2)
+  PASS  anim.foot_drift    foot point: at most 0 px from pivot y, x spread 0 px (limit 1)
+  PASS  anim.motion        frame-to-frame change 54-153 px (min 3)
+  PASS  anim.loop_seam     loop seam 46 px (median step 135 px)
+  PASS  anim.orphans       orphan pixels: 17 total, at most 3 per frame (limit 3; may be deliberate highlights/dither)
+
+[game-style]
+  PASS  game.off_palette   all colours in the Test_Game game palette (8 colours)
+  PASS  game.color_limit   8 distinct colours (game limit 16)
+  PASS  game.cell          cell 32x32, expected 32x32 (card Test_Hero)
+  PASS  game.char_colors   only colours from the Test_Hero card
+  PASS  game.light         heuristic: shading matches light top-left (10/10 frames)
+
+check: 21 PASS, 0 WARN, 0 FAIL

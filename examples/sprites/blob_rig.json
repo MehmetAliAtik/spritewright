@@ -1,0 +1,74 @@
+{
+  "name": "blob",
+  "width": 16,
+  "height": 16,
+  "palette": "pico-8",
+  "chars": {
+    "r": 2,
+    "R": 8,
+    "E": 0,
+    "k": 0,
+    "f": 9
+  },
+  "parts": {
+    "body": {
+      "z": 0,
+      "x": 4,
+      "y": 8,
+      "rows": [
+        "..rrrr..",
+        ".rRRRRr.",
+        "rRRRRRRr",
+        "rRRRRRRr",
+        "rRRRRRRr",
+        ".rrrrrr."
+      ]
+    },
+    "eyes": {
+      "z": 1,
+      "x": 6,
+      "y": 10,
+      "rows": [
+        "E..E"
+      ],
+      "alts": {
+        "blink": [
+          "...."
+        ]
+      }
+    },
+    "feet": {
+      "z": -1,
+      "x": 4,
+      "y": 13,
+      "rows": [
+        "ff....ff"
+      ]
+    }
+  },
+  "rig_animations": {
+    "idle": {
+      "durations": [
+        400,
+        200
+      ],
+      "frames": [
+        {},
+        {
+          "body": [
+            0,
+            1
+          ],
+          "eyes": {
+            "dy": 1,
+            "swap": "blink"
+          }
+        }
+      ]
+    }
+  },
+  "rig_outline": {
+    "color": "k",
+    "connectivity": 4
+  }
+}

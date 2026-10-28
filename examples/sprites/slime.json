@@ -1,0 +1,63 @@
+{
+  "name": "slime",
+  "width": 16,
+  "height": 16,
+  "palette": "pico-8",
+  "chars": {
+    "O": 0,
+    "G": 11,
+    "g": 3,
+    "l": 7,
+    "E": 1
+  },
+  "frames": {
+    "idle1": {
+      "duration": 300,
+      "rows": [
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "......OOOO......",
+        "....OOGGGGOO....",
+        "...OGGlGGGGGO...",
+        "..OGGlGGGGGGGO..",
+        "..OGGGEGGEGGGO..",
+        "..OGGGEGGEGGgO..",
+        ".OGGGGGGGGGGggO.",
+        ".OgGGGGGGGGgggO.",
+        ".OggggggggggggO.",
+        "..OOOOOOOOOOOO..",
+        "................"
+      ]
+    },
+    "idle2": {
+      "duration": 300,
+      "rows": [
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "................",
+        "...OOGGGGGGOO...",
+        "...OGGlGGGGGO...",
+        "..OGGlGGGGGGGO..",
+        "..OGGGEGGEGGGO..",
+        "..OGGGEGGEGGgO..",
+        ".OGGGGGGGGGGggO.",
+        ".OgGGGGGGGGgggO.",
+        ".OggggggggggggO.",
+        "..OOOOOOOOOOOO..",
+        "................"
+      ]
+    }
+  },
+  "animations": {
+    "idle": [
+      "idle1",
+      "idle2"
+    ]
+  }
+}

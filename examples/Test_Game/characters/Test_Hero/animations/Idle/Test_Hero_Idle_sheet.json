@@ -1,0 +1,220 @@
+{
+  "frames": {
+    "test_hero Idle 0": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "duration": 250,
+      "animation": "Idle",
+      "index": 0,
+      "source_frame": "idle1",
+      "offset": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "test_hero Idle 1": {
+      "frame": {
+        "x": 32,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "duration": 150,
+      "animation": "Idle",
+      "index": 1,
+      "source_frame": "idle2",
+      "offset": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "test_hero Idle 2": {
+      "frame": {
+        "x": 64,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "duration": 250,
+      "animation": "Idle",
+      "index": 2,
+      "source_frame": "idle3",
+      "offset": {
+        "x": 0,
+        "y": 1
+      }
+    },
+    "test_hero Idle 3": {
+      "frame": {
+        "x": 96,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 32,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 32,
+        "h": 32
+      },
+      "duration": 150,
+      "animation": "Idle",
+      "index": 3,
+      "source_frame": "idle4",
+      "offset": {
+        "x": 0,
+        "y": 1
+      }
+    }
+  },
+  "meta": {
+    "app": "spritewright",
+    "version": "1.0",
+    "target": "unity",
+    "image": "Test_Hero_Idle_sheet.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 128,
+      "h": 32
+    },
+    "scale": "1",
+    "frameTags": [
+      {
+        "name": "Idle",
+        "from": 0,
+        "to": 3,
+        "direction": "forward"
+      }
+    ],
+    "layers": [],
+    "slices": [],
+    "sprite": "test_hero",
+    "source": "../../source/test_hero.json"
+  },
+  "cell": {
+    "w": 32,
+    "h": 32
+  },
+  "frame_size": {
+    "w": 32,
+    "h": 32
+  },
+  "rows": 1,
+  "columns": 4,
+  "spacing": 0,
+  "margin": 0,
+  "padding": 1,
+  "pivot": {
+    "pixel": {
+      "x": 16,
+      "y": 31
+    },
+    "pixel_from_bottom": {
+      "x": 16,
+      "y": 0
+    },
+    "normalized": {
+      "x": 0.5,
+      "y": 0.0
+    },
+    "unity_preset": "Bottom",
+    "align": "fixed",
+    "source": {
+      "mode": "union-bottom-center",
+      "x": 16,
+      "y": 30
+    },
+    "note": "pixel = cell pixel (y down) holding the foot point; normalized = Unity custom pivot (x from left edge, y from bottom edge)"
+  },
+  "animations": [
+    {
+      "name": "Idle",
+      "row": 0,
+      "frame_count": 4,
+      "fps": 5.0,
+      "loop": true,
+      "durations": [
+        250,
+        150,
+        250,
+        150
+      ],
+      "uniform": false,
+      "times": [
+        0.0,
+        0.25,
+        0.4,
+        0.65
+      ],
+      "length": 0.8,
+      "strip": "Test_Hero_Idle_sheet.png",
+      "source_frames": [
+        "idle1",
+        "idle2",
+        "idle3",
+        "idle4"
+      ],
+      "source_animation": "idle"
+    }
+  ],
+  "unity": {
+    "pixels_per_unit": 32,
+    "sprite_mode": "Multiple",
+    "filter_mode": "Point",
+    "compression": "None",
+    "slice": "Grid By Cell Size",
+    "pivot": "Bottom"
+  },
+  "game": "Test_Game",
+  "character": "Test_Hero",
+  "animation": "Idle",
+  "frame_count": 4,
+  "fps": 5.0,
+  "loop": true
+}

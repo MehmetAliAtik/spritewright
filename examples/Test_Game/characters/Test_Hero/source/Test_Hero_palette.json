@@ -1,0 +1,14 @@
+{
+  "name": "Test_Hero-palette",
+  "colors": {
+    "outline": "000000",
+    "skin": "ffccaa",
+    "brown": "ab5236",
+    "hair": "ffa300",
+    "gold": "ffec27",
+    "foliage": "00e436",
+    "foliage_shadow": "008751",
+    "shadow": "7e2553",
+    "shadow_dark": "1d2b53"
+  }
+}

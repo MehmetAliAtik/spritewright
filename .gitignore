@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+*.egg
+.eggs/
+.coverage
+htmlcov/
+.venv/
+venv/
+env/
+dist/
+build/
+
+# User work: never committed (the bundled example lives in examples/).
+# Anchored to the repository root so examples/**/review/ stays tracked.
+/outputs/
+/output/
+/projects/
+/review/
+
+# Rebuild leftovers inside the bundled example (previous versions, draft sheets)
+examples/**/_archive/
+examples/**/review/draft/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+.claude/settings.local.json
+
+# Third-party palettes dropped into the checkout (see palettes/README.md): never committed
+palettes/*.hex
+!palettes/README.md

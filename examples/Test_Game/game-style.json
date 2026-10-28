@@ -1,0 +1,378 @@
+{
+  "schema": "spritewright.game-style/1",
+  "name": "Test_Game",
+  "description": "Test Game: a cozy, retro pixel-art game with warm colours, chibi characters on a 32x32 grid.",
+  "mood": [
+    "cozy",
+    "retro"
+  ],
+  "theme": {
+    "temperature": "warm",
+    "saturation": "medium",
+    "contrast": "high"
+  },
+  "palette_source": "pico-8",
+  "palette": [
+    {
+      "index": 0,
+      "hex": "000000",
+      "role": "outline"
+    },
+    {
+      "index": 1,
+      "hex": "1d2b53",
+      "role": "shadow_dark"
+    },
+    {
+      "index": 2,
+      "hex": "7e2553",
+      "role": "shadow"
+    },
+    {
+      "index": 3,
+      "hex": "008751",
+      "role": "foliage_shadow"
+    },
+    {
+      "index": 4,
+      "hex": "ab5236",
+      "role": "brown"
+    },
+    {
+      "index": 5,
+      "hex": "5f574f",
+      "role": "stone_shadow"
+    },
+    {
+      "index": 6,
+      "hex": "c2c3c7",
+      "role": "stone"
+    },
+    {
+      "index": 7,
+      "hex": "fff1e8",
+      "role": "highlight"
+    },
+    {
+      "index": 8,
+      "hex": "ff004d",
+      "role": "danger"
+    },
+    {
+      "index": 9,
+      "hex": "ffa300",
+      "role": "hair"
+    },
+    {
+      "index": 10,
+      "hex": "ffec27",
+      "role": "gold"
+    },
+    {
+      "index": 11,
+      "hex": "00e436",
+      "role": "foliage"
+    },
+    {
+      "index": 12,
+      "hex": "29adff",
+      "role": "sky"
+    },
+    {
+      "index": 13,
+      "hex": "83769c",
+      "role": "magic"
+    },
+    {
+      "index": 14,
+      "hex": "ff77a8",
+      "role": "accent"
+    },
+    {
+      "index": 15,
+      "hex": "ffccaa",
+      "role": "skin"
+    }
+  ],
+  "cell": [
+    32,
+    32
+  ],
+  "ppu": 32,
+  "outline": "selective",
+  "light": "top-left",
+  "shading": 2,
+  "dither": "none",
+  "max_colors": 16,
+  "proportions": "chibi",
+  "created": "2026-10-28 07:54",
+  "updated": "2026-10-28 07:54",
+  "changelog": [
+    {
+      "date": "2026-10-28 07:54",
+      "text": "style guide created (16 colours from pico-8)"
+    }
+  ],
+  "ramps": {
+    "shadow_dark": {
+      "base": "1d2b53",
+      "ramp": [
+        "110c2d",
+        "141540",
+        "1d2b53",
+        "5884b2",
+        "93cfe5"
+      ],
+      "in_palette": [
+        1,
+        13,
+        6
+      ],
+      "in_palette_hex": [
+        "1d2b53",
+        "83769c",
+        "c2c3c7"
+      ]
+    },
+    "shadow": {
+      "base": "7e2553",
+      "ramp": [
+        "390d39",
+        "5c184b",
+        "7e2553",
+        "c55978",
+        "ec9095"
+      ],
+      "in_palette": [
+        1,
+        2,
+        14
+      ],
+      "in_palette_hex": [
+        "1d2b53",
+        "7e2553",
+        "ff77a8"
+      ]
+    },
+    "stone": {
+      "base": "c2c3c7",
+      "ramp": [
+        "4c4c4e",
+        "87888a",
+        "c2c3c7",
+        "e1e2e6",
+        "f3f4f7"
+      ],
+      "in_palette": [
+        5,
+        6,
+        7
+      ],
+      "in_palette_hex": [
+        "5f574f",
+        "c2c3c7",
+        "fff1e8"
+      ]
+    },
+    "highlight": {
+      "base": "fff1e8",
+      "ramp": [
+        "5d4042",
+        "ae908b",
+        "fff1e8",
+        "fff8ed",
+        "fffdf2"
+      ],
+      "in_palette": [
+        5,
+        6,
+        7
+      ],
+      "in_palette_hex": [
+        "5f574f",
+        "c2c3c7",
+        "fff1e8"
+      ]
+    },
+    "danger": {
+      "base": "ff004d",
+      "ramp": [
+        "5d0048",
+        "ae005d",
+        "ff004d",
+        "ff3947",
+        "ff8a73"
+      ],
+      "in_palette": [
+        2,
+        8,
+        4
+      ],
+      "in_palette_hex": [
+        "7e2553",
+        "ff004d",
+        "ab5236"
+      ]
+    },
+    "hair": {
+      "base": "ffa300",
+      "ramp": [
+        "5d1000",
+        "ae4700",
+        "ffa300",
+        "ffe639",
+        "ffff73"
+      ],
+      "in_palette": [
+        4,
+        9,
+        10
+      ],
+      "in_palette_hex": [
+        "ab5236",
+        "ffa300",
+        "ffec27"
+      ]
+    },
+    "gold": {
+      "base": "ffec27",
+      "ramp": [
+        "5d300b",
+        "ae7e17",
+        "ffec27",
+        "ffff58",
+        "ffff88"
+      ],
+      "in_palette": [
+        4,
+        9,
+        10
+      ],
+      "in_palette_hex": [
+        "ab5236",
+        "ffa300",
+        "ffec27"
+      ]
+    },
+    "foliage": {
+      "base": "00e436",
+      "ramp": [
+        "00563c",
+        "009d4a",
+        "00e436",
+        "37f337",
+        "91fb71"
+      ],
+      "in_palette": [
+        3,
+        11
+      ],
+      "in_palette_hex": [
+        "008751",
+        "00e436"
+      ]
+    },
+    "sky": {
+      "base": "29adff",
+      "ramp": [
+        "0b185d",
+        "1952ae",
+        "29adff",
+        "59e6ff",
+        "89fff5"
+      ],
+      "in_palette": [
+        1,
+        12,
+        6
+      ],
+      "in_palette_hex": [
+        "1d2b53",
+        "29adff",
+        "c2c3c7"
+      ]
+    },
+    "magic": {
+      "base": "83769c",
+      "ramp": [
+        "2a2542",
+        "50496f",
+        "83769c",
+        "c2abd2",
+        "ead0f0"
+      ],
+      "in_palette": [
+        1,
+        13,
+        6
+      ],
+      "in_palette_hex": [
+        "1d2b53",
+        "83769c",
+        "c2c3c7"
+      ]
+    },
+    "accent": {
+      "base": "ff77a8",
+      "ramp": [
+        "5d2153",
+        "ae4784",
+        "ff77a8",
+        "ff96a3",
+        "ffbcb4"
+      ],
+      "in_palette": [
+        2,
+        14,
+        15
+      ],
+      "in_palette_hex": [
+        "7e2553",
+        "ff77a8",
+        "ffccaa"
+      ]
+    },
+    "skin": {
+      "base": "ffccaa",
+      "ramp": [
+        "5d2f32",
+        "ae7266",
+        "ffccaa",
+        "ffe7bd",
+        "fff9d0"
+      ],
+      "in_palette": [
+        5,
+        4,
+        15,
+        7
+      ],
+      "in_palette_hex": [
+        "5f574f",
+        "ab5236",
+        "ffccaa",
+        "fff1e8"
+      ]
+    }
+  },
+  "rules": {
+    "do": [
+      "Draw every sprite on the 32x32 cell; import with PPU 32, Filter Point, Compression None.",
+      "Use only the 16 colours of palette.hex, at most 16 per sprite.",
+      "Selective outline: outline each area with a darker shade of its own ramp; use the outline colour #000000 only where the silhouette meets the background.",
+      "Light comes from the top-left: lit pixels on the top-left side, shadows toward the bottom-right.",
+      "Use 2 shade step(s) per material, taken from the ramps in game-style.json.",
+      "Chibi proportions: big head (about 1/2 of the body height) - see `blueprint --style chibi`.",
+      "Keep the mood cozy, retro: warm colours, medium saturation, high contrast."
+    ],
+    "dont": [
+      "Don't add colours outside palette.hex - ask first; after approval use game-palette-add.",
+      "Don't use anti-aliasing or semi-transparent pixels (alpha only 0 or 255).",
+      "Don't dither.",
+      "Don't use pillow shading (light from every side) or light from the bottom-right.",
+      "Don't mix pixel sizes: no scaled, rotated or sub-pixel-moved sprites; 1 sprite pixel = 1 texel.",
+      "Don't change the cell size between animations of one character.",
+      "Don't use a pure dark outline all around every shape."
+    ]
+  }
+}

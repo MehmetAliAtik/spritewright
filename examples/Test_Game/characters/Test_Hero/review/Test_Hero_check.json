@@ -1,0 +1,609 @@
+{
+  "tool": "spritewright check",
+  "sprite": "test_hero",
+  "inputs": {
+    "source": "../source/test_hero.json",
+    "atlas": "../animations/Test_Hero_all_animations_atlas.json",
+    "game": "Test_Game"
+  },
+  "thresholds": {
+    "max_colors": 16,
+    "size_drift": 2,
+    "size_drift_fail": 6,
+    "foot_drift": 1,
+    "foot_drift_fail": 4,
+    "motion_min_px": 2,
+    "motion_min_ratio": 0.01,
+    "seam_factor": 2.0,
+    "orphans_per_frame": 3,
+    "orphan_connectivity": 4
+  },
+  "groups": [
+    {
+      "name": "source",
+      "checks": [
+        {
+          "id": "colors.count",
+          "status": "PASS",
+          "message": "source uses 8 colours (limit 16); palette Test_Hero-palette (9 colours, Canvas strict: no off-palette colours)",
+          "details": {
+            "used": [
+              "000000",
+              "008751",
+              "00e436",
+              "7e2553",
+              "ab5236",
+              "ffa300",
+              "ffccaa",
+              "ffec27"
+            ]
+          },
+          "threshold": 16
+        }
+      ]
+    },
+    {
+      "name": "atlas",
+      "checks": [
+        {
+          "id": "files.alpha",
+          "status": "PASS",
+          "message": "alpha only 0/255 (3 image(s))",
+          "details": {},
+          "threshold": "alpha in {0, 255}"
+        },
+        {
+          "id": "files.off_palette",
+          "status": "PASS",
+          "message": "all colours in palette Test_Hero-palette (3 image(s))",
+          "details": {},
+          "threshold": "palette Test_Hero-palette"
+        },
+        {
+          "id": "colors.count",
+          "status": "PASS",
+          "message": "at most 8 colours per image (limit 16)",
+          "details": {
+            "per_file": {
+              "Test_Hero_all_animations_atlas.png": 8,
+              "Idle/Test_Hero_Idle_sheet.png": 7,
+              "Walk/Test_Hero_Walk_sheet.png": 8
+            }
+          },
+          "threshold": 16
+        },
+        {
+          "id": "atlas.geometry",
+          "status": "PASS",
+          "message": "cell 32x32, atlas 192x64 = 6x2 cells, 2 strip(s) consistent",
+          "details": {
+            "fail": [],
+            "warn": [],
+            "cell": [
+              32,
+              32
+            ],
+            "atlas": [
+              192,
+              64
+            ],
+            "rows": 2,
+            "columns": 6
+          },
+          "threshold": "atlas = columns*cell x rows*cell, strip = frame_count*cell"
+        },
+        {
+          "id": "atlas.sync",
+          "status": "PASS",
+          "message": "atlas cells identical to the current source frames",
+          "details": {},
+          "threshold": null
+        }
+      ]
+    },
+    {
+      "name": "atlas/Idle",
+      "checks": [
+        {
+          "id": "anim.size_drift",
+          "status": "PASS",
+          "message": "size drift: width 0 px, height 1 px (limit 2)",
+          "details": {
+            "sizes": {
+              "Idle__0": [
+                16,
+                27
+              ],
+              "Idle__1": [
+                16,
+                27
+              ],
+              "Idle__2": [
+                16,
+                26
+              ],
+              "Idle__3": [
+                16,
+                26
+              ]
+            },
+            "dw": 0,
+            "dh": 1
+          },
+          "threshold": [
+            2,
+            6
+          ]
+        },
+        {
+          "id": "anim.foot_drift",
+          "status": "PASS",
+          "message": "foot point: at most 0 px from pivot y, x spread 0 px (limit 1)",
+          "details": {
+            "pivot": [
+              16,
+              31
+            ],
+            "feet": {
+              "Idle__0": [
+                16,
+                31
+              ],
+              "Idle__1": [
+                16,
+                31
+              ],
+              "Idle__2": [
+                16,
+                31
+              ],
+              "Idle__3": [
+                16,
+                31
+              ]
+            },
+            "dy_from_pivot": {
+              "Idle__0": 0,
+              "Idle__1": 0,
+              "Idle__2": 0,
+              "Idle__3": 0
+            },
+            "dx_vs_pivot": {
+              "Idle__0": 0,
+              "Idle__1": 0,
+              "Idle__2": 0,
+              "Idle__3": 0
+            }
+          },
+          "threshold": [
+            1,
+            4
+          ]
+        },
+        {
+          "id": "anim.motion",
+          "status": "PASS",
+          "message": "frame-to-frame change 38-80 px (min 3)",
+          "details": {
+            "steps": {
+              "Idle__0->Idle__1": 44,
+              "Idle__1->Idle__2": 80,
+              "Idle__2->Idle__3": 38
+            },
+            "min_visible": 3.04,
+            "identical": [],
+            "low": []
+          },
+          "threshold": [
+            2,
+            0.01
+          ]
+        },
+        {
+          "id": "anim.loop_seam",
+          "status": "PASS",
+          "message": "loop seam 80 px (median step 44 px)",
+          "details": {
+            "seam": 80,
+            "median_step": 44.0,
+            "factor": 2.0
+          },
+          "threshold": 2.0
+        },
+        {
+          "id": "anim.orphans",
+          "status": "PASS",
+          "message": "orphan pixels: 9 total, at most 3 per frame (limit 3; may be deliberate highlights/dither)",
+          "details": {
+            "Idle__0": {
+              "count": 2,
+              "pixels": [
+                {
+                  "x": 21,
+                  "y": 16,
+                  "isolated": false
+                },
+                {
+                  "x": 18,
+                  "y": 22,
+                  "isolated": false
+                }
+              ]
+            },
+            "Idle__1": {
+              "count": 2,
+              "pixels": [
+                {
+                  "x": 21,
+                  "y": 16,
+                  "isolated": false
+                },
+                {
+                  "x": 18,
+                  "y": 23,
+                  "isolated": false
+                }
+              ]
+            },
+            "Idle__2": {
+              "count": 2,
+              "pixels": [
+                {
+                  "x": 21,
+                  "y": 17,
+                  "isolated": false
+                },
+                {
+                  "x": 18,
+                  "y": 23,
+                  "isolated": false
+                }
+              ]
+            },
+            "Idle__3": {
+              "count": 3,
+              "pixels": [
+                {
+                  "x": 19,
+                  "y": 15,
+                  "isolated": false
+                },
+                {
+                  "x": 21,
+                  "y": 17,
+                  "isolated": false
+                },
+                {
+                  "x": 18,
+                  "y": 22,
+                  "isolated": false
+                }
+              ]
+            }
+          },
+          "threshold": 3
+        }
+      ]
+    },
+    {
+      "name": "atlas/Walk",
+      "checks": [
+        {
+          "id": "anim.size_drift",
+          "status": "PASS",
+          "message": "size drift: width 0 px, height 1 px (limit 2)",
+          "details": {
+            "sizes": {
+              "Walk__0": [
+                16,
+                27
+              ],
+              "Walk__1": [
+                16,
+                26
+              ],
+              "Walk__2": [
+                16,
+                27
+              ],
+              "Walk__3": [
+                16,
+                27
+              ],
+              "Walk__4": [
+                16,
+                26
+              ],
+              "Walk__5": [
+                16,
+                27
+              ]
+            },
+            "dw": 0,
+            "dh": 1
+          },
+          "threshold": [
+            2,
+            6
+          ]
+        },
+        {
+          "id": "anim.foot_drift",
+          "status": "PASS",
+          "message": "foot point: at most 0 px from pivot y, x spread 0 px (limit 1)",
+          "details": {
+            "pivot": [
+              16,
+              31
+            ],
+            "feet": {
+              "Walk__0": [
+                16,
+                31
+              ],
+              "Walk__1": [
+                16,
+                31
+              ],
+              "Walk__2": [
+                16,
+                31
+              ],
+              "Walk__3": [
+                16,
+                31
+              ],
+              "Walk__4": [
+                16,
+                31
+              ],
+              "Walk__5": [
+                16,
+                31
+              ]
+            },
+            "dy_from_pivot": {
+              "Walk__0": 0,
+              "Walk__1": 0,
+              "Walk__2": 0,
+              "Walk__3": 0,
+              "Walk__4": 0,
+              "Walk__5": 0
+            },
+            "dx_vs_pivot": {
+              "Walk__0": 0,
+              "Walk__1": 0,
+              "Walk__2": 0,
+              "Walk__3": 0,
+              "Walk__4": 0,
+              "Walk__5": 0
+            }
+          },
+          "threshold": [
+            1,
+            4
+          ]
+        },
+        {
+          "id": "anim.motion",
+          "status": "PASS",
+          "message": "frame-to-frame change 54-153 px (min 3)",
+          "details": {
+            "steps": {
+              "Walk__0->Walk__1": 132,
+              "Walk__1->Walk__2": 149,
+              "Walk__2->Walk__3": 54,
+              "Walk__3->Walk__4": 135,
+              "Walk__4->Walk__5": 153
+            },
+            "min_visible": 3.2,
+            "identical": [],
+            "low": []
+          },
+          "threshold": [
+            2,
+            0.01
+          ]
+        },
+        {
+          "id": "anim.loop_seam",
+          "status": "PASS",
+          "message": "loop seam 46 px (median step 135 px)",
+          "details": {
+            "seam": 46,
+            "median_step": 135.0,
+            "factor": 2.0
+          },
+          "threshold": 2.0
+        },
+        {
+          "id": "anim.orphans",
+          "status": "PASS",
+          "message": "orphan pixels: 17 total, at most 3 per frame (limit 3; may be deliberate highlights/dither)",
+          "details": {
+            "Walk__0": {
+              "count": 3,
+              "pixels": [
+                {
+                  "x": 21,
+                  "y": 16,
+                  "isolated": false
+                },
+                {
+                  "x": 14,
+                  "y": 21,
+                  "isolated": false
+                },
+                {
+                  "x": 18,
+                  "y": 22,
+                  "isolated": false
+                }
+              ]
+            },
+            "Walk__1": {
+              "count": 3,
+              "pixels": [
+                {
+                  "x": 21,
+                  "y": 17,
+                  "isolated": false
+                },
+                {
+                  "x": 14,
+                  "y": 22,
+                  "isolated": false
+                },
+                {
+                  "x": 18,
+                  "y": 23,
+                  "isolated": false
+                }
+              ]
+            },
+            "Walk__2": {
+              "count": 3,
+              "pixels": [
+                {
+                  "x": 21,
+                  "y": 16,
+                  "isolated": false
+                },
+                {
+                  "x": 18,
+                  "y": 22,
+                  "isolated": false
+                },
+                {
+                  "x": 17,
+                  "y": 26,
+                  "isolated": false
+                }
+              ]
+            },
+            "Walk__3": {
+              "count": 3,
+              "pixels": [
+                {
+                  "x": 21,
+                  "y": 16,
+                  "isolated": false
+                },
+                {
+                  "x": 16,
+                  "y": 21,
+                  "isolated": false
+                },
+                {
+                  "x": 17,
+                  "y": 21,
+                  "isolated": false
+                }
+              ]
+            },
+            "Walk__4": {
+              "count": 3,
+              "pixels": [
+                {
+                  "x": 21,
+                  "y": 17,
+                  "isolated": false
+                },
+                {
+                  "x": 16,
+                  "y": 22,
+                  "isolated": false
+                },
+                {
+                  "x": 17,
+                  "y": 22,
+                  "isolated": false
+                }
+              ]
+            },
+            "Walk__5": {
+              "count": 2,
+              "pixels": [
+                {
+                  "x": 21,
+                  "y": 16,
+                  "isolated": false
+                },
+                {
+                  "x": 18,
+                  "y": 22,
+                  "isolated": false
+                }
+              ]
+            }
+          },
+          "threshold": 3
+        }
+      ]
+    },
+    {
+      "name": "game-style",
+      "checks": [
+        {
+          "id": "game.off_palette",
+          "status": "PASS",
+          "message": "all colours in the Test_Game game palette (8 colours)",
+          "details": {},
+          "threshold": "game palette"
+        },
+        {
+          "id": "game.color_limit",
+          "status": "PASS",
+          "message": "8 distinct colours (game limit 16)",
+          "details": {
+            "count": 8
+          },
+          "threshold": 16
+        },
+        {
+          "id": "game.cell",
+          "status": "PASS",
+          "message": "cell 32x32, expected 32x32 (card Test_Hero)",
+          "details": {
+            "cell": [
+              32,
+              32
+            ],
+            "expected": [
+              32,
+              32
+            ]
+          },
+          "threshold": [
+            32,
+            32
+          ]
+        },
+        {
+          "id": "game.char_colors",
+          "status": "PASS",
+          "message": "only colours from the Test_Hero card",
+          "details": {},
+          "threshold": "card colours"
+        },
+        {
+          "id": "game.light",
+          "status": "PASS",
+          "message": "heuristic: shading matches light top-left (10/10 frames)",
+          "details": {
+            "frames_against": []
+          },
+          "threshold": "top-left"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "PASS": 21,
+    "WARN": 0,
+    "FAIL": 0,
+    "SKIP": 0
+  },
+  "summary_line": "check: 21 PASS, 0 WARN, 0 FAIL",
+  "exit_code": 0
+}

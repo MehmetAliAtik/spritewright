@@ -1,0 +1,421 @@
+{
+  "name": "test_hero",
+  "width": 32,
+  "height": 32,
+  "palette": "Test_Hero_palette.json",
+  "chars": {
+    "A": "outline",
+    "B": "skin",
+    "C": "brown",
+    "D": "hair",
+    "E": "gold",
+    "F": "foliage",
+    "G": "foliage_shadow",
+    "H": "shadow",
+    "I": "shadow_dark"
+  },
+  "parts": {
+    "arm_l": {
+      "z": 0,
+      "x": 12,
+      "y": 19,
+      "rows": [
+        "..II..",
+        "..CC..",
+        "..CC..",
+        "..CC.."
+      ],
+      "alts": {
+        "mid": [
+          "..II..",
+          "..CC..",
+          "..CC..",
+          "..CC.."
+        ],
+        "fwd": [
+          "..II..",
+          "...CC.",
+          "....CC",
+          "....CC"
+        ],
+        "back": [
+          "..II..",
+          ".CC...",
+          "CC....",
+          "CC...."
+        ]
+      }
+    },
+    "leg_l": {
+      "z": 1,
+      "x": 12,
+      "y": 24,
+      "rows": [
+        "...CC...",
+        "...CC...",
+        "...HH...",
+        "...HH...",
+        "...HHH..",
+        "...HHHH."
+      ],
+      "alts": {
+        "stand": [
+          "...CC...",
+          "...CC...",
+          "...HH...",
+          "...HH...",
+          "...HHH..",
+          "...HHHH."
+        ],
+        "mid": [
+          "...CC...",
+          "...CC...",
+          "....CC..",
+          "....HH..",
+          "....HHH.",
+          "....HHHH"
+        ],
+        "fwd": [
+          "...CC...",
+          "....CC..",
+          "....HH..",
+          ".....HH.",
+          ".....HHH",
+          ".....HHH"
+        ],
+        "back": [
+          "...CC...",
+          "..CC....",
+          ".CC.....",
+          ".HH.....",
+          "HHH.....",
+          ".HHH...."
+        ],
+        "backlift": [
+          "...CC...",
+          "..CC....",
+          ".CC.....",
+          ".HH.....",
+          "HHH.....",
+          "........"
+        ],
+        "pass": [
+          "...CC...",
+          "...CCC..",
+          "...HHH..",
+          "...HHHH.",
+          "........",
+          "........"
+        ]
+      }
+    },
+    "leg_r": {
+      "z": 2,
+      "x": 12,
+      "y": 24,
+      "rows": [
+        "...BB...",
+        "...BB...",
+        "...CC...",
+        "...CC...",
+        "...CCC..",
+        "...CCCC."
+      ],
+      "alts": {
+        "stand": [
+          "...BB...",
+          "...BB...",
+          "...CC...",
+          "...CC...",
+          "...CCC..",
+          "...CCCC."
+        ],
+        "mid": [
+          "...BB...",
+          "...BB...",
+          "....BB..",
+          "....CC..",
+          "....CCC.",
+          "....CCCC"
+        ],
+        "fwd": [
+          "...BB...",
+          "....BB..",
+          "....CC..",
+          ".....CC.",
+          ".....CCC",
+          ".....CCC"
+        ],
+        "back": [
+          "...BB...",
+          "..BB....",
+          ".BB.....",
+          ".CC.....",
+          "CCC.....",
+          ".CCC...."
+        ],
+        "backlift": [
+          "...BB...",
+          "..BB....",
+          ".BB.....",
+          ".CC.....",
+          "CCC.....",
+          "........"
+        ],
+        "pass": [
+          "...BB...",
+          "...BBB..",
+          "...CCC..",
+          "...CCCC.",
+          "........",
+          "........"
+        ]
+      }
+    },
+    "body": {
+      "z": 3,
+      "x": 13,
+      "y": 18,
+      "rows": [
+        "FFFFFFF.",
+        "FFFFFFFG",
+        "FFFFFFGG",
+        "CCCCCECC",
+        "FFFFFFGG",
+        "FFFFFGGG"
+      ]
+    },
+    "head": {
+      "z": 4,
+      "x": 9,
+      "y": 5,
+      "rows": [
+        "....DDDDDDD...",
+        "..DDEEEEDDDD..",
+        ".DDEEDDDDDDDD.",
+        ".DDDDDDDDDDDDD",
+        "CDDDDDDDDDDDDD",
+        "CDDDDDDDDDDDDD",
+        "CCDDDBBDBBDBBB",
+        "CCDDBBBBBBABBB",
+        "CCCDBBBBBBABBB",
+        ".CCDBBBBBBBBBB",
+        ".CCCBBBBBBBBCB",
+        "..CCCBBBBBBBB.",
+        ".....BBBBCC..."
+      ],
+      "alts": {
+        "blink": [
+          "....DDDDDDD...",
+          "..DDEEEEDDDD..",
+          ".DDEEDDDDDDDD.",
+          ".DDDDDDDDDDDDD",
+          "CDDDDDDDDDDDDD",
+          "CDDDDDDDDDDDDD",
+          "CCDDDBBDBBDBBB",
+          "CCDDBBBBBBBBBB",
+          "CCCDBBBBBBABBB",
+          ".CCDBBBBBBBBBB",
+          ".CCCBBBBBBBBCB",
+          "..CCCBBBBBBBB.",
+          ".....BBBBCC..."
+        ]
+      }
+    },
+    "arm_r": {
+      "z": 5,
+      "x": 13,
+      "y": 19,
+      "rows": [
+        "..GG..",
+        "..BC..",
+        "..BC..",
+        "..BB.."
+      ],
+      "alts": {
+        "mid": [
+          "..GG..",
+          "..BC..",
+          "..BC..",
+          "..BB.."
+        ],
+        "fwd": [
+          "..GG..",
+          "...BC.",
+          "....BC",
+          "....BB"
+        ],
+        "back": [
+          "..GG..",
+          ".BC...",
+          "BC....",
+          "BB...."
+        ]
+      }
+    }
+  },
+  "rig_animations": {
+    "idle": {
+      "durations": [
+        250,
+        150,
+        250,
+        150
+      ],
+      "frames": [
+        {},
+        {
+          "body": [
+            0,
+            1
+          ],
+          "arm_r": [
+            0,
+            1
+          ],
+          "arm_l": [
+            0,
+            1
+          ]
+        },
+        {
+          "body": [
+            0,
+            1
+          ],
+          "head": [
+            0,
+            1
+          ],
+          "arm_r": [
+            0,
+            1
+          ],
+          "arm_l": [
+            0,
+            1
+          ]
+        },
+        {
+          "head": {
+            "dy": 1,
+            "swap": "blink"
+          }
+        }
+      ]
+    },
+    "walk": {
+      "duration": 100,
+      "frames": [
+        {
+          "leg_r": {
+            "swap": "fwd"
+          },
+          "leg_l": {
+            "swap": "back"
+          },
+          "arm_r": {
+            "swap": "back"
+          },
+          "arm_l": {
+            "swap": "fwd"
+          }
+        },
+        {
+          "leg_r": {
+            "swap": "mid"
+          },
+          "leg_l": {
+            "swap": "backlift"
+          },
+          "arm_r": {
+            "swap": "back",
+            "dy": 1
+          },
+          "arm_l": {
+            "swap": "fwd",
+            "dy": 1
+          },
+          "body": [
+            0,
+            1
+          ],
+          "head": [
+            0,
+            1
+          ]
+        },
+        {
+          "leg_r": {
+            "swap": "stand"
+          },
+          "leg_l": {
+            "swap": "pass"
+          },
+          "arm_r": {
+            "swap": "mid"
+          },
+          "arm_l": {
+            "swap": "mid"
+          }
+        },
+        {
+          "leg_r": {
+            "swap": "back"
+          },
+          "leg_l": {
+            "swap": "fwd"
+          },
+          "arm_r": {
+            "swap": "fwd"
+          },
+          "arm_l": {
+            "swap": "back"
+          }
+        },
+        {
+          "leg_r": {
+            "swap": "backlift"
+          },
+          "leg_l": {
+            "swap": "mid"
+          },
+          "arm_r": {
+            "swap": "fwd",
+            "dy": 1
+          },
+          "arm_l": {
+            "swap": "back",
+            "dy": 1
+          },
+          "body": [
+            0,
+            1
+          ],
+          "head": [
+            0,
+            1
+          ]
+        },
+        {
+          "leg_r": {
+            "swap": "pass"
+          },
+          "leg_l": {
+            "swap": "stand"
+          },
+          "arm_r": {
+            "swap": "mid"
+          },
+          "arm_l": {
+            "swap": "mid"
+          }
+        }
+      ]
+    }
+  },
+  "rig_outline": {
+    "color": "outline",
+    "connectivity": 8
+  }
+}

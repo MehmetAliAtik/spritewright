@@ -1,0 +1,235 @@
+{
+  "name": "hero_anim",
+  "width": 32,
+  "height": 32,
+  "palette": "hero_palette.json",
+  "chars": {
+    "A": "hair_lt",
+    "B": "hair",
+    "C": "hair_dk",
+    "D": "belt",
+    "E": "buckle",
+    "F": "tunic_lt",
+    "G": "tunic",
+    "H": "tunic_dk",
+    "I": "white",
+    "J": "pants_lt",
+    "K": "pants",
+    "L": "eye",
+    "M": "blush",
+    "N": "skin",
+    "O": "skin_dk"
+  },
+  "parts": {
+    "leg_l": {
+      "z": 0,
+      "x": 11,
+      "y": 26,
+      "rows": [
+        ".JKK",
+        ".JKK",
+        ".DDD",
+        "DDDD"
+      ]
+    },
+    "leg_r": {
+      "z": 0,
+      "x": 17,
+      "y": 26,
+      "rows": [
+        "JKK.",
+        "JKK.",
+        "DDD.",
+        "DDDD"
+      ]
+    },
+    "body": {
+      "z": 1,
+      "x": 11,
+      "y": 19,
+      "rows": [
+        "...ONNO...",
+        ".FGGGGGGH.",
+        "HFGGGGGGGH",
+        "HFGGGGGGGH",
+        "DDDDEEDDDD",
+        "HFGGGGGGGH",
+        "HHHHHHHHHH"
+      ]
+    },
+    "arm_l": {
+      "z": 2,
+      "x": 9,
+      "y": 20,
+      "rows": [
+        ".F",
+        "FG",
+        "FG",
+        "NN",
+        "NO"
+      ]
+    },
+    "arm_r": {
+      "z": 2,
+      "x": 21,
+      "y": 20,
+      "rows": [
+        "H.",
+        "GH",
+        "GH",
+        "NN",
+        "ON"
+      ]
+    },
+    "head": {
+      "z": 3,
+      "x": 9,
+      "y": 6,
+      "rows": [
+        "....CCCCCC....",
+        "..CCBBAABBCC..",
+        ".CBBBAABBBBBC.",
+        ".CBBABBBBBBBC.",
+        "CBBBBBBBBBBBBC",
+        "CBBBNBBBBNBBBC",
+        "CBNNNNBBNNNNBC",
+        "CNNNNNNNNNNNNC",
+        "CNNLINNNNLINNC",
+        "CNNLLNNNNLLNNC",
+        ".NMNNNNNNNNMN.",
+        ".NNNNNCCNNNNN.",
+        "..ONNNNNNNNO.."
+      ],
+      "alts": {
+        "blink": [
+          "....CCCCCC....",
+          "..CCBBAABBCC..",
+          ".CBBBAABBBBBC.",
+          ".CBBABBBBBBBC.",
+          "CBBBBBBBBBBBBC",
+          "CBBBNBBBBNBBBC",
+          "CBNNNNBBNNNNBC",
+          "CNNNNNNNNNNNNC",
+          "CNNNNNNNNNNNNC",
+          "CNNLLNNNNLLNNC",
+          ".NMNNNNNNNNMN.",
+          ".NNNNNCCNNNNN.",
+          "..ONNNNNNNNO.."
+        ]
+      }
+    }
+  },
+  "rig_animations": {
+    "idle": {
+      "duration": 167,
+      "fps": 6.0,
+      "loop": true,
+      "frames": [
+        {},
+        {
+          "body": [
+            0,
+            1
+          ],
+          "arm_l": [
+            0,
+            1
+          ],
+          "arm_r": [
+            0,
+            1
+          ],
+          "head": [
+            0,
+            1
+          ]
+        },
+        {},
+        {
+          "head": {
+            "swap": "blink"
+          }
+        }
+      ]
+    },
+    "walk": {
+      "duration": 100,
+      "fps": 10.0,
+      "loop": true,
+      "frames": [
+        {
+          "body": [
+            0,
+            1
+          ],
+          "arm_l": [
+            0,
+            1
+          ],
+          "arm_r": [
+            0,
+            1
+          ],
+          "head": [
+            0,
+            1
+          ]
+        },
+        {
+          "leg_l": [
+            0,
+            -1
+          ]
+        },
+        {
+          "leg_l": [
+            0,
+            -1
+          ],
+          "arm_r": [
+            0,
+            -1
+          ]
+        },
+        {
+          "body": [
+            0,
+            1
+          ],
+          "arm_l": [
+            0,
+            1
+          ],
+          "arm_r": [
+            0,
+            1
+          ],
+          "head": [
+            0,
+            1
+          ]
+        },
+        {
+          "leg_r": [
+            0,
+            -1
+          ]
+        },
+        {
+          "leg_r": [
+            0,
+            -1
+          ],
+          "arm_l": [
+            0,
+            -1
+          ]
+        }
+      ]
+    }
+  },
+  "rig_outline": {
+    "color": "outline",
+    "connectivity": 8
+  }
+}
